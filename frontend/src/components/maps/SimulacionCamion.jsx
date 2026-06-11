@@ -1,5 +1,65 @@
 import { useEffect, useRef } from 'react';
 
+// Get clean lat/lng values from LatLng objects or plain objects
+function getCoordinate(p) {
+  if (!p) return { lat: 0, lng: 0 };
+  const lat = typeof p.lat === 'function' ? p.lat() : parseFloat(p.lat);
+  const lng = typeof p.lng === 'function' ? p.lng() : parseFloat(p.lng);
+  return { lat, lng };
+}
+
+// Interpolate coordinate path to targetPointsCount for smooth and long-lasting animation
+function interpolatePath(coords, targetPointsCount = 180) {
+  if (coords.length < 2) return coords;
+
+  const segments = [];
+  let totalLength = 0;
+
+  for (let i = 0; i < coords.length - 1; i++) {
+    const p1 = getCoordinate(coords[i]);
+    const p2 = getCoordinate(coords[i + 1]);
+
+    const latDiff = p2.lat - p1.lat;
+    const lngDiff = p2.lng - p1.lng;
+    const length = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+
+    segments.push({ p1, p2, latDiff, lngDiff, length });
+    totalLength += length;
+  }
+
+  if (totalLength === 0) return coords;
+
+  const interpolated = [];
+  const first = getCoordinate(coords[0]);
+  interpolated.push(new window.google.maps.LatLng(first.lat, first.lng));
+
+  for (let step = 1; step < targetPointsCount; step++) {
+    const targetDist = (step / targetPointsCount) * totalLength;
+
+    let accumulated = 0;
+    let found = false;
+    for (const seg of segments) {
+      if (accumulated + seg.length >= targetDist) {
+        const ratio = (targetDist - accumulated) / seg.length;
+        const lat = seg.p1.lat + seg.latDiff * ratio;
+        const lng = seg.p1.lng + seg.lngDiff * ratio;
+        interpolated.push(new window.google.maps.LatLng(lat, lng));
+        found = true;
+        break;
+      }
+      accumulated += seg.length;
+    }
+    if (!found) {
+      const last = getCoordinate(coords[coords.length - 1]);
+      interpolated.push(new window.google.maps.LatLng(last.lat, last.lng));
+    }
+  }
+
+  const last = getCoordinate(coords[coords.length - 1]);
+  interpolated.push(new window.google.maps.LatLng(last.lat, last.lng));
+  return interpolated;
+}
+
 // Fallback formula to compute bearing (heading) between two coordinates in degrees
 function computeHeadingManual(p1, p2) {
   const lat1 = p1.lat() * Math.PI / 180;
@@ -36,7 +96,8 @@ export default function SimulacionCamion({
     const TRUCK_SVG_PATH = "M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z";
 
     const startAnimation = (pathCoords) => {
-      pathRef.current = pathCoords;
+      const interpolatedCoords = interpolatePath(pathCoords, 180);
+      pathRef.current = interpolatedCoords;
       indexRef.current = 0;
 
       if (markerRef.current) {
@@ -45,17 +106,17 @@ export default function SimulacionCamion({
 
       // Initial heading
       let initialHeading = 0;
-      if (pathCoords.length > 1) {
+      if (interpolatedCoords.length > 1) {
         if (window.google?.maps?.geometry?.spherical?.computeHeading) {
-          initialHeading = window.google.maps.geometry.spherical.computeHeading(pathCoords[0], pathCoords[1]);
+          initialHeading = window.google.maps.geometry.spherical.computeHeading(interpolatedCoords[0], interpolatedCoords[1]);
         } else {
-          initialHeading = computeHeadingManual(pathCoords[0], pathCoords[1]);
+          initialHeading = computeHeadingManual(interpolatedCoords[0], interpolatedCoords[1]);
         }
       }
 
       markerRef.current = new window.google.maps.Marker({
         map,
-        position: pathCoords[0],
+        position: interpolatedCoords[0],
         icon: {
           path: TRUCK_SVG_PATH,
           fillColor: '#1B5E20',
@@ -69,7 +130,7 @@ export default function SimulacionCamion({
       });
 
       if (onProgress) {
-        onProgress(0, pathCoords.length);
+        onProgress(0, interpolatedCoords.length);
       }
     };
 

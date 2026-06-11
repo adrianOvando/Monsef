@@ -244,7 +244,7 @@ export default function VisualizacionRutas() {
                   map={mapInstance}
                   puntosRuta={rutas.find(r => r.id === simulacionActiva)?.puntos || []}
                   isPlaying={simulacionJugando}
-                  speed={80}
+                  speed={100}
                   onProgress={(idx, tot) => setSimulacionProgreso({ index: idx, total: tot })}
                   onFinished={() => {
                     setSimulacionActiva(null);
