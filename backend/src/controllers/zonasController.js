@@ -7,7 +7,7 @@ const pool = require('../config/db');
 const getZonas = async (req, res) => {
   try {
     const { activa } = req.query;
-    let query = `SELECT z.id, z.nombre, z.descripcion, z.activa, z.created_at,
+    let query = `SELECT z.id, z.nombre, z.descripcion, z.activa, z.lat_referencia, z.lng_referencia, z.created_at,
                         COUNT(DISTINCT rp.id) AS total_rutas,
                         COUNT(DISTINCT pc.id) AS total_puntos_criticos
                  FROM zonas z
@@ -37,7 +37,7 @@ const getZona = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await pool.query(
-      `SELECT z.id, z.nombre, z.descripcion, z.activa, z.created_at,
+      `SELECT z.id, z.nombre, z.descripcion, z.activa, z.lat_referencia, z.lng_referencia, z.created_at,
               COUNT(DISTINCT rp.id) AS total_rutas,
               COUNT(DISTINCT pc.id) AS total_puntos_criticos
        FROM zonas z

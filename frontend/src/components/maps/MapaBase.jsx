@@ -55,7 +55,7 @@ function loadGoogleMapsScript(apiKey) {
  *   height  — CSS height string (default '500px')
  *   className — optional CSS class for outer container
  */
-export default function MapaBase({ onMapLoad, height = '500px', className }) {
+export default function MapaBase({ onMapLoad, height = '500px', className, children }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -187,6 +187,9 @@ export default function MapaBase({ onMapLoad, height = '500px', className }) {
       <div style={wrapperStyle} className={className} aria-label="Mapa de Sucre">
         {/* Google Maps container */}
         <div ref={containerRef} style={mapContainerStyle} />
+
+        {/* Child layers (CapaRutas, CapaPuntos, etc.) */}
+        {!loading && !error && children}
 
         {/* Loader overlay */}
         {loading && !error && (

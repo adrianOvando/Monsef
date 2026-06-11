@@ -53,6 +53,20 @@ export default function VisualizacionRutas() {
       }).catch(() => setLoading(false));
   }, []);
 
+  // Pan and zoom to selected zone reference coordinates
+  useEffect(() => {
+    if (!mapInstance || !filtroZona || zonas.length === 0) return;
+    const selectedZone = zonas.find(z => String(z.id) === filtroZona);
+    if (selectedZone && selectedZone.lat_referencia && selectedZone.lng_referencia) {
+      const lat = parseFloat(selectedZone.lat_referencia);
+      const lng = parseFloat(selectedZone.lng_referencia);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        mapInstance.panTo({ lat, lng });
+        mapInstance.setZoom(16);
+      }
+    }
+  }, [filtroZona, zonas, mapInstance]);
+
   const rutasFiltradas = rutas.filter(r => !filtroZona || String(r.zona_id) === filtroZona);
   const rutasVisibles = rutasFiltradas.map(r => ({ ...r, activa: rutasActivas[r.id] ? 1 : 0 }));
 
@@ -151,7 +165,7 @@ export default function VisualizacionRutas() {
                               Ruta propuesta
                             </span>
                           )}
-                          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-gray-800)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-gray-800)', lineHeight: '1.3' }}>
                             {ruta.nombre}
                           </div>
                           <div style={{ fontSize: '12px', color: 'var(--color-gray-600)', marginTop: 2 }}>

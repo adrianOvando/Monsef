@@ -5,7 +5,7 @@ const getRutas = async (req, res) => {
   try {
     const { zona_id } = req.query;
     let query = `SELECT rp.id, rp.nombre, rp.descripcion, rp.frecuencia, rp.horario_estimado,
-                        rp.distancia_km, rp.activa, rp.created_at,
+                        rp.distancia_km, rp.activa, rp.tipo, rp.created_at,
                         z.id AS zona_id, z.nombre AS zona_nombre,
                         COUNT(DISTINCT pr.id) AS total_puntos
                  FROM rutas_planificadas rp
@@ -34,7 +34,7 @@ const getRuta = async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT rp.id, rp.nombre, rp.descripcion, rp.frecuencia, rp.horario_estimado,
-              rp.distancia_km, rp.activa, rp.created_at,
+              rp.distancia_km, rp.activa, rp.tipo, rp.created_at,
               z.id AS zona_id, z.nombre AS zona_nombre
        FROM rutas_planificadas rp
        JOIN zonas z ON z.id = rp.zona_id
