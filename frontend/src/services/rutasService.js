@@ -1,0 +1,10 @@
+import api from './api.js';
+export const getRutas = (params) => api.get('/rutas', { params });
+export const getRuta = (id) => api.get(`/rutas/${id}`);
+export const getPuntosRuta = (id) => api.get(`/rutas/${id}/puntos`);
+export const createRuta = (data) => api.post('/rutas', data);
+export const updateRuta = (id, data) => api.put(`/rutas/${id}`, data);
+export const toggleRuta = (id) => api.put(`/rutas/${id}/toggle`);
+export const getZonas = (params) => api.get('/zonas', { params });
+export const createZona = (data) => api.post('/zonas', data);
+export const toggleZona = (id) => api.put(`/zonas/${id}/toggle`);

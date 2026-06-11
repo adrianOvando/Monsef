@@ -1,0 +1,9 @@
+-- MonitoreoRS Sucre - Seeder 002
+-- NOTA: Los hashes reales de contraseñas son generados por run_seeders.js
+-- Este archivo documenta las credenciales; NO ejecutar directamente.
+-- Ejecutar: node seeders/run_seeders.js
+--
+-- Credenciales:
+--   admin@monitoreo.local     / admin123
+--   supervisor@monitoreo.local / supervisor123
+--   operador@monitoreo.local  / operador123

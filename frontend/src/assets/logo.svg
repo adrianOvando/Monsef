@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 52" role="img" aria-label="MonitoreoRS Sucre logo">
+  <title>MonitoreoRS Sucre</title>
+
+  <!-- Background circle -->
+  <circle cx="26" cy="26" r="22" fill="#1B5E20"/>
+
+  <!-- Recycling arrows icon (three arrows forming a triangle cycle) -->
+  <!-- Arrow 1: top-right, curving right -->
+  <path d="M 26 10 L 32 16 L 29 16 Q 36 16 39 22 L 41 19 Q 37 12 29 12 L 29 10 Z"
+        fill="#FFFFFF"/>
+  <!-- Arrow 1 arrowhead -->
+  <path d="M 41 19 L 38 25 L 37 20 Z" fill="#FFFFFF"/>
+
+  <!-- Arrow 2: right-bottom, curving left-down -->
+  <path d="M 39 22 L 43 28 L 41 27 Q 41 35 34 38 L 36 35 L 31 36 L 33 40 Q 42 37 43 28 L 45 28 Z"
+        fill="#FFFFFF"/>
+  <!-- Arrow 2 arrowhead -->
+  <path d="M 33 40 L 27 38 L 32 36 Z" fill="#FFFFFF"/>
+
+  <!-- Arrow 3: bottom-left, curving up -->
+  <path d="M 19 38 Q 12 35 12 27 L 10 27 L 14 21 L 18 27 L 16 27 Q 16 33 21 36 Z"
+        fill="#FFFFFF"/>
+  <!-- Arrow 3 arrowhead -->
+  <path d="M 19 38 L 22 32 L 24 37 Z" fill="#FFFFFF"/>
+
+  <!-- Small leaf accent in center -->
+  <ellipse cx="26" cy="26" rx="4" ry="6" fill="#388E3C" transform="rotate(-30 26 26)"/>
+  <line x1="26" y1="26" x2="26" y2="30" stroke="#FFFFFF" stroke-width="0.8"/>
+
+  <!-- Text: MonitoreoRS -->
+  <text x="56" y="22" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">MonitoreoRS</text>
+
+  <!-- Text: Sucre -->
+  <text x="57" y="38" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="400" fill="rgba(255,255,255,0.75)" letter-spacing="1.5">SUCRE</text>
+</svg>
