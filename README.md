@@ -93,8 +93,16 @@ Sigue estos pasos para levantar el prototipo localmente en tu máquina:
 ### Requisitos Previos
 *   **Node.js** (versión 20 o superior).
 *   **XAMPP** (con los servicios de Apache y MySQL iniciados).
+*   Consulte el archivo [requirements.txt](file:///c:/Users/Adrian/Desktop/MonseSoft/monitoreo-rs-sucre/requirements.txt) para una lista completa de bibliotecas utilizadas y compatibilidades de versión.
 
-### Paso 1: Configurar Variables de Entorno
+### Paso 1: Instalar Dependencias
+Abra una terminal en la **raíz del proyecto** (donde se encuentra clonado el repositorio) y ejecute:
+```powershell
+npm run install:all
+```
+*Este comando automatizado instalará todos los paquetes de Node.js necesarios para el gestor raíz, para el Backend (`/backend`) y para el Frontend (`/frontend`).*
+
+### Paso 2: Configurar Variables de Entorno
 Crea un archivo `.env` en las siguientes rutas según corresponda:
 
 **En `backend/.env`:**
@@ -113,33 +121,32 @@ PORT=3001
 VITE_API_BASE_URL=http://localhost:3001/api
 VITE_GOOGLE_MAPS_API_KEY=TU_API_KEY_DE_GOOGLE_MAPS
 ```
-*(Reemplaza `TU_API_KEY_DE_GOOGLE_MAPS` con una credencial válida de la consola de Google Cloud con la API "Maps JavaScript API" habilitada).*
+*(Reemplaza `TU_API_KEY_DE_GOOGLE_MAPS` con una credencial válida de la consola de Google Cloud con la API "Maps JavaScript API" y "Directions API" habilitadas).*
 
-### Paso 2: Crear la Base de Datos y Semillas (Seeders)
-Abre una consola en la raíz del proyecto y ejecuta:
+### Paso 3: Crear la Base de Datos y Semillas (Seeders)
+Desde la **raíz del proyecto**, ejecute el comando:
 ```powershell
-cd backend
 npm run db:setup
 ```
 Este comando automatizado:
 1.  Se conecta a tu MySQL local.
-2.  Crea la base de datos `monitoreo_bd` si no existe.
-3.  Ejecuta secuencialmente los 10 archivos de migraciones (creación de tablas).
-4.  Ejecuta los seeders para cargar datos preconfigurados de prueba (usuarios, rutas iniciales, puntos de referencia, geocercas, etc.).
+2.  Elimina la base de datos `monitoreo_bd` si ya existía para asegurar una instalación limpia.
+3.  Crea la base de datos `monitoreo_bd` y sus tablas asociadas (10 archivos de migración).
+4.  Ejecuta los seeders para cargar datos preconfigurados de prueba (roles, usuarios encriptados con bcrypt, zonas, rutas de tipo actual/propuesta, geocercas alineadas y puntos críticos).
 
-### Paso 3: Levantar Servidores
+### Paso 4: Levantar Servidores
+
+Puede ejecutar ambos servidores desde la **raíz del proyecto** en consolas separadas:
 
 1.  **Iniciar el Backend:**
     ```powershell
-    cd backend
-    npm run dev
+    npm run backend:dev
     ```
     *El servidor se iniciará en `http://localhost:3001`.*
 
 2.  **Iniciar el Frontend:**
     ```powershell
-    cd frontend
-    npm run dev
+    npm run frontend:dev
     ```
     *La interfaz de usuario estará disponible en `http://localhost:5173`.*
 

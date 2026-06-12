@@ -1,0 +1,64 @@
+# ==============================================================================
+# MonitoreoRS Sucre — Requisitos de Instalación / Installation Requirements
+# ==============================================================================
+# Este archivo detalla los requisitos del sistema y las dependencias necesarias
+# para ejecutar el proyecto localmente.
+#
+# Nota: Al ser un proyecto basado en JavaScript (Node.js/React), las dependencias
+# se gestionan y se instalan a través de npm utilizando los archivos package.json.
+# No ejecute este archivo con pip; siga las instrucciones de instalación detalladas abajo.
+
+#-------------------------------------------------------------------------------
+# 1. REQUISITOS DEL ENTORNO DE EJECUCIÓN (SYSTEM REQUIREMENTS)
+#-------------------------------------------------------------------------------
+* Node.js >= 20.0.0 (https://nodejs.org/)
+* npm >= 10.0.0 (incluido con Node.js)
+* MySQL Server (ej. XAMPP con servicios MySQL y Apache iniciados)
+
+#-------------------------------------------------------------------------------
+# 2. PRINCIPALES PAQUETES Y DEPENDENCIAS (KEY LIBRARIES)
+#-------------------------------------------------------------------------------
+
+[BACKEND]
+- express ^4.19.2         # Framework HTTP
+- mysql2 ^3.9.7           # Driver de conexión para MySQL (con promesas)
+- jsonwebtoken ^9.0.2     # Autenticación segura de sesiones
+- bcryptjs ^2.4.3         # Encriptación de contraseñas de usuarios
+- express-validator ^7.1.0 # Validación de datos de peticiones
+- pdfkit ^0.15.0          # Generador de reportes en PDF desde el servidor
+- cors ^2.8.5             # Habilitación de peticiones cruzadas (cross-origin)
+- dotenv ^16.4.5          # Carga de variables de entorno desde archivo .env
+
+[FRONTEND]
+- react ^18.3.1           # Biblioteca para interfaces de usuario
+- react-dom ^18.3.1       # Renderizado en el DOM de la aplicación SPA
+- react-router-dom ^6.22.3 # Gestor de rutas de la SPA (React Router v6)
+- axios ^1.6.8            # Cliente HTTP para llamadas al Backend
+- vite ^5.1.6             # Herramienta de empaquetado y servidor de desarrollo rápido
+
+#-------------------------------------------------------------------------------
+# 3. INSTRUCCIONES DE INSTALACIÓN (INSTALLATION COMMANDS)
+#-------------------------------------------------------------------------------
+Siga estos pasos desde la consola para instalar todo el entorno:
+
+1. Abra una terminal en la RAÍZ del proyecto clonado (donde se encuentra este archivo).
+2. Ejecute el siguiente comando para instalar automáticamente las dependencias del
+   Gestor Raíz, del Backend y del Frontend de una sola vez:
+
+   $ npm run install:all
+
+   * (Este comando ejecuta internamente "npm install" en el directorio raíz,
+      en la carpeta /backend y en la carpeta /frontend).
+
+3. Si prefiere instalar las dependencias de manera manual, ejecute los siguientes comandos:
+   
+   # En la raíz (para scripts globales)
+   $ npm install
+   
+   # En el directorio backend
+   $ cd backend
+   $ npm install
+   
+   # En el directorio frontend
+   $ cd ../frontend
+   $ npm install
