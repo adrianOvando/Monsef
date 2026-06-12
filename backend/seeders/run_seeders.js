@@ -81,6 +81,12 @@ async function runSeeders() {
     await connection.query(sqlGeocercas);
     console.log('   ✓ Geocercas insertadas');
 
+    // 8. Seeder Horarios Establecidos
+    console.log('\n📅 Insertando horarios establecidos...');
+    const sqlHorarios = fs.readFileSync(path.join(__dirname, '008_seed_horarios_tramos.sql'), 'utf8');
+    await connection.query(sqlHorarios);
+    console.log('   ✓ Horarios establecidos insertados');
+
     console.log('\n🎉 ¡Todos los seeders ejecutados exitosamente!');
     console.log('\n📌 Credenciales de acceso:');
     console.log('   admin@monitoreo.local      / admin123');

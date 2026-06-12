@@ -83,7 +83,7 @@ export default function Dashboard() {
       color: 'var(--color-primary)' 
     },
     { 
-      label: 'Rutas Activas', 
+      label: 'Rutas Planificadas Activas', 
       value: resumen?.totalRutas ?? 0, 
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-info)' }}>
@@ -120,6 +120,17 @@ export default function Dashboard() {
       ), 
       color: 'var(--color-success)' 
     },
+    { 
+      label: 'Horarios Establecidos', 
+      value: resumen?.totalHorarios ?? 0, 
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-primary)' }}>
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      ), 
+      color: 'var(--color-primary)' 
+    },
   ];
 
   return (
@@ -127,7 +138,7 @@ export default function Dashboard() {
       <div className="page-header"><h1>Dashboard</h1><span style={{ color: 'var(--color-gray-400)', fontSize: 13 }}>Vista general del sistema</span></div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 24 }}>
         {kpis.map((kpi) => (
           <div key={kpi.label} className="card kpi-card">
             <div className="card-body" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>

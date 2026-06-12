@@ -30,6 +30,7 @@ const geocercasRoutes      = require('./routes/geocercasRoutes');
 const recorridosRoutes     = require('./routes/recorridosRoutes');
 const notificacionesRoutes = require('./routes/notificacionesRoutes');
 const reportesRoutes       = require('./routes/reportesRoutes');
+const horariosRoutes       = require('./routes/horariosRoutes');
 
 app.use('/api/auth',           authRoutes);
 app.use('/api/zonas',          zonasRoutes);
@@ -39,6 +40,7 @@ app.use('/api/geocercas',      geocercasRoutes);
 app.use('/api/recorridos',     recorridosRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/reportes',       reportesRoutes);
+app.use('/api/horarios',       horariosRoutes);
 // Usuarios están montados dentro de authRoutes en /api/usuarios
 const { getUsuarios, createUsuario, updateUsuario, toggleUsuarioActivo } = require('./controllers/authController');
 const authMiddleware = require('./middleware/authMiddleware');

@@ -74,84 +74,100 @@ export default function ControlRecorridos() {
       </div>
 
       {tab === 'registrar' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <div className="card">
-            <div className="card-header"><h3 className="card-title">Datos del Recorrido</h3></div>
-            <div className="card-body">
-              <div className="form-group"><label className="form-label">Ruta Planificada *</label>
-                <select className="form-control" value={form.ruta_id} onChange={e => setForm(f => ({ ...f, ruta_id: e.target.value }))}>
-                  <option value="">Seleccionar ruta...</option>
-                  {rutas.map(r => <option key={r.id} value={r.id}>{r.nombre}</option>)}
-                </select>
-              </div>
-              <div className="form-group"><label className="form-label">Fecha *</label><input className="form-control" type="date" value={form.fecha} onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))} /></div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group"><label className="form-label">Hora Inicio</label><input className="form-control" type="time" value={form.hora_inicio} onChange={e => setForm(f => ({ ...f, hora_inicio: e.target.value }))} /></div>
-                <div className="form-group"><label className="form-label">Hora Fin</label><input className="form-control" type="time" value={form.hora_fin} onChange={e => setForm(f => ({ ...f, hora_fin: e.target.value }))} /></div>
-              </div>
-              <div className="form-group"><label className="form-label">Observaciones</label><textarea className="form-control" rows={3} value={form.observaciones} onChange={e => setForm(f => ({ ...f, observaciones: e.target.value }))} /></div>
-            </div>
+        <>
+          <div style={{
+            background: '#E3F2FD',
+            borderLeft: '3px solid #1565C0',
+            padding: '10px 14px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            color: 'var(--color-gray-600)',
+            marginBottom: '20px'
+          }}>
+            Nota: Este sistema es un prototipo académico. En una implementación real, las coordenadas
+            serían enviadas automáticamente por sensores GPS instalados en los vehículos recolectores.
+            En esta versión de demostración, las coordenadas se ingresan manualmente.
           </div>
 
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Coordenadas del Recorrido</h3>
-              <Button size="sm" variant="secondary" onClick={agregarCoord}>+ Agregar Punto</Button>
-            </div>
-            <div className="card-body" style={{ padding: 0 }}>
-              <div className="table-wrapper">
-                <table>
-                  <thead><tr><th>#</th><th>Latitud</th><th>Longitud</th><th></th></tr></thead>
-                  <tbody>
-                    {coordenadas.map((c, i) => (
-                      <tr key={i}>
-                        <td style={{ color: 'var(--color-gray-400)' }}>{i + 1}</td>
-                        <td><input className="form-control" style={{ padding: '4px 8px' }} type="number" step="0.000001" placeholder="-19.060" value={c.lat} onChange={e => actualizarCoord(i, 'lat', e.target.value)} /></td>
-                        <td><input className="form-control" style={{ padding: '4px 8px' }} type="number" step="0.000001" placeholder="-65.262" value={c.lng} onChange={e => actualizarCoord(i, 'lng', e.target.value)} /></td>
-                        <td>{coordenadas.length > 2 && <Button size="sm" variant="danger" onClick={() => quitarCoord(i)}>✕</Button>}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div style={{ padding: 16 }}>
-              <Button loading={saving} onClick={registrar} style={{ width: '100%' }}>Registrar y Verificar</Button>
-            </div>
-          </div>
-
-          {resultado && (
-            <div className="card" style={{ gridColumn: '1 / -1' }}>
-              <div className="card-header"><h3 className="card-title">Resultado de Verificación</h3></div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div className="card">
+              <div className="card-header"><h3 className="card-title">Datos del Recorrido</h3></div>
               <div className="card-body">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: 56, fontWeight: 700, color: resultado.porcentaje_cumplimiento >= 80 ? 'var(--color-success)' : 'var(--color-danger)', lineHeight: 1 }}>
-                      {resultado.porcentaje_cumplimiento}%
-                    </div>
-                    <div style={{ fontSize: 13, color: 'var(--color-gray-600)', marginTop: 4 }}>Cumplimiento</div>
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ marginBottom: 12 }}><Badge value={resultado.estado} type="estado" /></div>
-                    <div className="progress-bar-wrapper" style={{ height: 16, borderRadius: 8, marginBottom: 8 }}>
-                      <div className="progress-bar-fill" style={{ width: `${resultado.porcentaje_cumplimiento}%`, height: '100%', background: resultado.porcentaje_cumplimiento >= 80 ? 'var(--color-success)' : 'var(--color-danger)', borderRadius: 8, transition: 'width 1s ease' }} />
-                    </div>
-                    {resultado.porcentaje_cumplimiento < 80 && (
-                      <div className="alert-banner alert-warning" style={{ marginTop: 8 }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ display: 'inline-block', marginRight: 6, verticalAlign: 'text-bottom' }}>
-                          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                          <line x1="12" y1="9" x2="12" y2="13"></line>
-                          <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                        Desviación detectada. Se generó una notificación automática.
+                <div className="form-group"><label className="form-label">Ruta Planificada *</label>
+                  <select className="form-control" value={form.ruta_id} onChange={e => setForm(f => ({ ...f, ruta_id: e.target.value }))}>
+                    <option value="">Seleccionar ruta...</option>
+                    {rutas.map(r => <option key={r.id} value={r.id}>{r.nombre}</option>)}
+                  </select>
+                </div>
+                <div className="form-group"><label className="form-label">Fecha *</label><input className="form-control" type="date" value={form.fecha} onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))} /></div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div className="form-group"><label className="form-label">Hora Inicio</label><input className="form-control" type="time" value={form.hora_inicio} onChange={e => setForm(f => ({ ...f, hora_inicio: e.target.value }))} /></div>
+                  <div className="form-group"><label className="form-label">Hora Fin</label><input className="form-control" type="time" value={form.hora_fin} onChange={e => setForm(f => ({ ...f, hora_fin: e.target.value }))} /></div>
+                </div>
+                <div className="form-group"><label className="form-label">Observaciones</label><textarea className="form-control" rows={3} value={form.observaciones} onChange={e => setForm(f => ({ ...f, observaciones: e.target.value }))} /></div>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Coordenadas del Recorrido</h3>
+                <Button size="sm" variant="secondary" onClick={agregarCoord}>+ Agregar Punto</Button>
+              </div>
+              <div className="card-body" style={{ padding: 0 }}>
+                <div className="table-wrapper">
+                  <table>
+                    <thead><tr><th>#</th><th>Latitud</th><th>Longitud</th><th></th></tr></thead>
+                    <tbody>
+                      {coordenadas.map((c, i) => (
+                        <tr key={i}>
+                          <td style={{ color: 'var(--color-gray-400)' }}>{i + 1}</td>
+                          <td><input className="form-control" style={{ padding: '4px 8px' }} type="number" step="0.000001" placeholder="-19.060" value={c.lat} onChange={e => actualizarCoord(i, 'lat', e.target.value)} /></td>
+                          <td><input className="form-control" style={{ padding: '4px 8px' }} type="number" step="0.000001" placeholder="-65.262" value={c.lng} onChange={e => actualizarCoord(i, 'lng', e.target.value)} /></td>
+                          <td>{coordenadas.length > 2 && <Button size="sm" variant="danger" onClick={() => quitarCoord(i)}>✕</Button>}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div style={{ padding: 16 }}>
+                <Button loading={saving} onClick={registrar} style={{ width: '100%' }}>Registrar y Verificar</Button>
+              </div>
+            </div>
+
+            {resultado && (
+              <div className="card" style={{ gridColumn: '1 / -1' }}>
+                <div className="card-header"><h3 className="card-title">Resultado de Verificación</h3></div>
+                <div className="card-body">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: 56, fontWeight: 700, color: resultado.porcentaje_cumplimiento >= 80 ? 'var(--color-success)' : 'var(--color-danger)', lineHeight: 1 }}>
+                        {resultado.porcentaje_cumplimiento}%
                       </div>
-                    )}
+                      <div style={{ fontSize: 13, color: 'var(--color-gray-600)', marginTop: 4 }}>Cumplimiento</div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ marginBottom: 12 }}><Badge value={resultado.estado} type="estado" /></div>
+                      <div className="progress-bar-wrapper" style={{ height: 16, borderRadius: 8, marginBottom: 8 }}>
+                        <div className="progress-bar-fill" style={{ width: `${resultado.porcentaje_cumplimiento}%`, height: '100%', background: resultado.porcentaje_cumplimiento >= 80 ? 'var(--color-success)' : 'var(--color-danger)', borderRadius: 8, transition: 'width 1s ease' }} />
+                      </div>
+                      {resultado.porcentaje_cumplimiento < 80 && (
+                        <div className="alert-banner alert-warning" style={{ marginTop: 8 }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ display: 'inline-block', marginRight: 6, verticalAlign: 'text-bottom' }}>
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                          </svg>
+                          Desviación detectada. Se generó una notificación automática.
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </>
       )}
 
       {tab === 'historial' && (

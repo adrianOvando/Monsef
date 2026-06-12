@@ -13,7 +13,7 @@ const TIPOS = ['acumulacion', 'contenedor_desbordado', 'calle_sin_cobertura', 'o
 const NIVELES = ['bajo', 'medio', 'alto'];
 const TIPO_LABEL = { acumulacion: 'Acumulación', contenedor_desbordado: 'Contenedor desbordado', calle_sin_cobertura: 'Sin cobertura', otro: 'Otro' };
 
-const EMPTY_FORM = { nombre: '', zona_id: '', lat: '', lng: '', tipo: 'acumulacion', nivel_criticidad: 'medio', descripcion: '', fecha_registro: '' };
+const EMPTY_FORM = { nombre: '', zona_id: '', lat: '', lng: '', tipo: 'acumulacion', nivel_criticidad: 'medio', descripcion: '', fecha_registro: '', foto_url: '' };
 
 export default function PuntosCriticos() {
   const { user } = useAuth();
@@ -46,7 +46,7 @@ export default function PuntosCriticos() {
   useEffect(() => { cargar(); }, [filtros]);
 
   const abrirNuevo = () => { setEditando(null); setForm(EMPTY_FORM); setModalOpen(true); };
-  const abrirEditar = (p) => { setEditando(p); setForm({ nombre: p.nombre, zona_id: p.zona_id, lat: p.lat, lng: p.lng, tipo: p.tipo, nivel_criticidad: p.nivel_criticidad, descripcion: p.descripcion || '', fecha_registro: p.fecha_registro || '' }); setModalOpen(true); };
+  const abrirEditar = (p) => { setEditando(p); setForm({ nombre: p.nombre, zona_id: p.zona_id, lat: p.lat, lng: p.lng, tipo: p.tipo, nivel_criticidad: p.nivel_criticidad, descripcion: p.descripcion || '', fecha_registro: p.fecha_registro || '', foto_url: p.foto_url || '' }); setModalOpen(true); };
   const abrirDetalle = (p) => { setPuntoDetalle(p); setDetailOpen(true); };
 
   const guardar = async () => {
@@ -143,6 +143,7 @@ export default function PuntosCriticos() {
           </div>
         </div>
         <div className="form-group"><label className="form-label">Fecha Registro</label><input className="form-control" type="date" value={form.fecha_registro} onChange={e => setForm(f => ({ ...f, fecha_registro: e.target.value }))} /></div>
+        <div className="form-group"><label className="form-label">URL de la Fotografía</label><input className="form-control" value={form.foto_url} onChange={e => setForm(f => ({ ...f, foto_url: e.target.value }))} placeholder="Ej: anexo_b_foto1.jpg" /></div>
         <div className="form-group"><label className="form-label">Descripción</label><textarea className="form-control" rows={3} value={form.descripcion} onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} /></div>
       </Modal>
 
@@ -158,6 +159,22 @@ export default function PuntosCriticos() {
             <div><b>Coordenadas:</b> {puntoDetalle.lat}, {puntoDetalle.lng}</div>
             <div><b>Fecha:</b> {puntoDetalle.fecha_registro ? new Date(puntoDetalle.fecha_registro).toLocaleDateString('es-BO') : '—'}</div>
             {puntoDetalle.descripcion && <div><b>Descripción:</b> {puntoDetalle.descripcion}</div>}
+            <div style={{ marginTop: 8 }}>
+              <b>Fotografía de Referencia:</b>
+              {puntoDetalle.foto_url ? (
+                <div style={{ marginTop: 6 }}>
+                  <img 
+                    src={puntoDetalle.foto_url.startsWith('http') || puntoDetalle.foto_url.startsWith('/') ? puntoDetalle.foto_url : `/${puntoDetalle.foto_url}`} 
+                    alt="Punto Crítico" 
+                    style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '6px', objectFit: 'cover', display: 'block', border: '1px solid var(--color-gray-100)' }} 
+                  />
+                </div>
+              ) : (
+                <div style={{ marginTop: 6, padding: '16px', background: 'var(--color-gray-50)', borderRadius: '6px', color: 'var(--color-gray-400)', textAlign: 'center', fontSize: '13px', border: '1px dashed var(--color-gray-100)' }}>
+                  Sin fotografía registrada
+                </div>
+              )}
+            </div>
           </div>
         )}
       </Modal>

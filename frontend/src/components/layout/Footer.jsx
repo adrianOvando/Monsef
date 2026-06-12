@@ -27,7 +27,7 @@ export default function Footer() {
   return (
     <footer style={footerStyle} role="contentinfo">
       <p style={textStyle}>
-        Sistema de Monitoreo y Visualización de Rutas &mdash; USFX, Ingeniería en Sistemas, 2026
+        Sistema de monitoreo y visualización de rutas de recolección de residuos sólidos en zonas de ladera de la ciudad de Sucre &mdash; USFX &mdash; 2026
       </p>
     </footer>
   );

@@ -15,7 +15,7 @@ const TIPOS = [
         <line x1="15" y1="6" x2="15" y2="21"></line>
       </svg>
     ), 
-    label: 'Resumen de Cobertura por Zona', 
+    label: 'Rutas registradas y cobertura', 
     desc: 'Rutas, recorridos y cumplimiento promedio por zona.' 
   },
   { 
@@ -27,7 +27,7 @@ const TIPOS = [
         <line x1="12" y1="17" x2="12.01" y2="17"></line>
       </svg>
     ), 
-    label: 'Puntos Críticos por Zona', 
+    label: 'Puntos críticos identificados', 
     desc: 'Listado completo de puntos críticos registrados.' 
   },
   { 
@@ -39,7 +39,7 @@ const TIPOS = [
         <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
       </svg>
     ), 
-    label: 'Historial de Recorridos', 
+    label: 'Cumplimiento de recorridos programados', 
     desc: 'Recorridos en el período con detalle de cumplimiento.' 
   },
   { 
@@ -50,7 +50,7 @@ const TIPOS = [
         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
       </svg>
     ), 
-    label: 'Notificaciones y Alertas', 
+    label: 'Notificaciones y desviaciones', 
     desc: 'Desviaciones de ruta detectadas en el período.' 
   },
 ];

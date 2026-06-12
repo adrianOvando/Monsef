@@ -171,6 +171,12 @@ export default function VisualizacionRutas() {
                           <div style={{ fontSize: '12px', color: 'var(--color-gray-600)', marginTop: 2 }}>
                             {ruta.zona_nombre} · {ruta.distancia_km} km
                           </div>
+                          <div style={{ fontSize: '11px', color: 'var(--color-gray-600)', marginTop: 3 }}>
+                            <b>Frecuencia:</b> {ruta.frecuencia || '—'}
+                          </div>
+                          <div style={{ fontSize: '11px', color: 'var(--color-gray-600)' }}>
+                            <b>Horario:</b> {ruta.horario_estimado || '—'}
+                          </div>
                         </div>
                       </div>
 

@@ -149,7 +149,14 @@ export default function Administracion() {
             <div className="form-group"><label className="form-label">Rol</label>
               <select className="form-control" value={uForm.rol_id} onChange={e => setUForm(f => ({ ...f, rol_id: e.target.value }))}>
                 <option value="">Seleccionar...</option>
-                {roles.map(r => <option key={r.id} value={r.id}>{r.nombre}</option>)}
+                {roles.map(r => {
+                  const roleLabels = {
+                    admin: 'Administrador',
+                    supervisor: 'Supervisor municipal',
+                    operador: 'Operador / personal de recolección'
+                  };
+                  return <option key={r.id} value={r.id}>{roleLabels[r.nombre] || r.nombre}</option>;
+                })}
               </select>
             </div>
             <div className="form-group"><label className="form-label">{uEdit ? 'Nueva Contraseña (dejar vacío para no cambiar)' : 'Contraseña *'}</label><input className="form-control" type="password" value={uForm.password} onChange={e => setUForm(f => ({ ...f, password: e.target.value }))} /></div>

@@ -6,7 +6,7 @@ const getPuntos = async (req, res) => {
     const { zona_id, tipo, nivel_criticidad } = req.query;
 
     let query = `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng,
-                        pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro,
+                        pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, pc.foto_url,
                         z.id AS zona_id, z.nombre AS zona_nombre
                  FROM puntos_criticos pc
                  JOIN zonas z ON z.id = pc.zona_id
@@ -33,7 +33,7 @@ const getPunto = async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng,
-              pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro,
+              pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, pc.foto_url,
               z.id AS zona_id, z.nombre AS zona_nombre
        FROM puntos_criticos pc
        JOIN zonas z ON z.id = pc.zona_id
@@ -51,7 +51,7 @@ const getPunto = async (req, res) => {
 
 // POST /api/puntos-criticos [admin, supervisor]
 const createPunto = async (req, res) => {
-  const { nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, fecha_registro } = req.body;
+  const { nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, fecha_registro, foto_url } = req.body;
 
   if (!nombre?.trim()) return res.status(400).json({ success: false, error: 'nombre es requerido' });
   if (lat === undefined || lng === undefined) return res.status(400).json({ success: false, error: 'lat y lng son requeridos' });
@@ -59,13 +59,13 @@ const createPunto = async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `INSERT INTO puntos_criticos (nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, activo, fecha_registro)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)`,
-      [nombre.trim(), descripcion || null, lat, lng, tipo || 'otro', nivel_criticidad || 'medio', zona_id, fecha_registro || null]
+      `INSERT INTO puntos_criticos (nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, activo, fecha_registro, foto_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+      [nombre.trim(), descripcion || null, lat, lng, tipo || 'otro', nivel_criticidad || 'medio', zona_id, fecha_registro || null, foto_url || null]
     );
 
     const [newPunto] = await pool.query(
-      `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng, pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, z.id AS zona_id, z.nombre AS zona_nombre
+      `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng, pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, pc.foto_url, z.id AS zona_id, z.nombre AS zona_nombre
        FROM puntos_criticos pc JOIN zonas z ON z.id = pc.zona_id WHERE pc.id = ?`,
       [result.insertId]
     );
@@ -80,7 +80,7 @@ const createPunto = async (req, res) => {
 // PUT /api/puntos-criticos/:id [admin, supervisor]
 const updatePunto = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, activo, fecha_registro } = req.body;
+  const { nombre, descripcion, lat, lng, tipo, nivel_criticidad, zona_id, activo, fecha_registro, foto_url } = req.body;
 
   try {
     const [existing] = await pool.query('SELECT id FROM puntos_criticos WHERE id = ? LIMIT 1', [id]);
@@ -96,6 +96,7 @@ const updatePunto = async (req, res) => {
     if (zona_id !== undefined) { fields.push('zona_id = ?'); values.push(zona_id); }
     if (activo !== undefined) { fields.push('activo = ?'); values.push(activo ? 1 : 0); }
     if (fecha_registro !== undefined) { fields.push('fecha_registro = ?'); values.push(fecha_registro); }
+    if (foto_url !== undefined) { fields.push('foto_url = ?'); values.push(foto_url || null); }
 
     if (fields.length === 0) return res.status(400).json({ success: false, error: 'Sin campos para actualizar' });
 
@@ -103,7 +104,7 @@ const updatePunto = async (req, res) => {
     await pool.query(`UPDATE puntos_criticos SET ${fields.join(', ')} WHERE id = ?`, values);
 
     const [updated] = await pool.query(
-      `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng, pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, z.id AS zona_id, z.nombre AS zona_nombre
+      `SELECT pc.id, pc.nombre, pc.descripcion, pc.lat, pc.lng, pc.tipo, pc.nivel_criticidad, pc.activo, pc.created_at, pc.fecha_registro, pc.foto_url, z.id AS zona_id, z.nombre AS zona_nombre
        FROM puntos_criticos pc JOIN zonas z ON z.id = pc.zona_id WHERE pc.id = ?`,
       [id]
     );

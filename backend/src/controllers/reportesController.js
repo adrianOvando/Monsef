@@ -14,12 +14,13 @@ const COLOR_DARK = '#212121';
 const getResumen = async (req, res) => {
   try {
     const [[{ totalZonas }]] = await pool.query('SELECT COUNT(*) AS totalZonas FROM zonas WHERE activa=1');
-    const [[{ totalRutas }]] = await pool.query('SELECT COUNT(*) AS totalRutas FROM rutas_planificadas WHERE activa=1');
+    const [[{ totalRutas }]] = await pool.query("SELECT COUNT(*) AS totalRutas FROM rutas_planificadas WHERE activa=1 AND tipo='propuesta'");
     const [[{ totalPuntos }]] = await pool.query('SELECT COUNT(*) AS totalPuntos FROM puntos_criticos WHERE activo=1');
     const [[{ totalAlto }]] = await pool.query("SELECT COUNT(*) AS totalAlto FROM puntos_criticos WHERE activo=1 AND nivel_criticidad='alto'");
     const [[{ totalMes }]] = await pool.query(
       'SELECT COUNT(*) AS totalMes FROM recorridos WHERE MONTH(fecha)=MONTH(NOW()) AND YEAR(fecha)=YEAR(NOW())'
     );
+    const [[{ totalHorarios }]] = await pool.query('SELECT COUNT(*) AS totalHorarios FROM horarios_tramos WHERE activo=1');
 
     res.json({
       success: true,
@@ -28,7 +29,8 @@ const getResumen = async (req, res) => {
         totalRutas,
         totalPuntos,
         totalAlto,
-        totalMes
+        totalMes,
+        totalHorarios
       }
     });
   } catch (err) {
@@ -62,10 +64,10 @@ const generarPDF = async (req, res) => {
   const fechaGen = new Date().toLocaleDateString('es-BO', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const tipoNombres = {
-    '1': 'Resumen de Cobertura por Zona',
-    '2': 'Puntos Críticos por Zona',
-    '3': 'Historial de Recorridos',
-    '4': 'Notificaciones y Alertas'
+    '1': 'Rutas registradas y cobertura',
+    '2': 'Puntos críticos identificados',
+    '3': 'Cumplimiento de recorridos programados',
+    '4': 'Notificaciones y desviaciones'
   };
 
   const doc = new PDFDocument({ size: 'A4', margin: 50 });

@@ -1,4 +1,4 @@
-# 🚛 MonitoreoRS Sucre — Sistema de Monitoreo de Rutas de Residuos Sólidos
+# 🚛 MonitoreoRS Sucre — Sistema de monitoreo y visualización de rutas de recolección de residuos sólidos en zonas de ladera de la ciudad de Sucre
 
 Prototipo académico funcional desarrollado para la **Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca (USFX)**, Carrera de Ingeniería en Sistemas.
 
@@ -14,6 +14,22 @@ El sistema utiliza una arquitectura desacoplada Cliente-Servidor (SPA + REST API
 *   **Backend:** Node.js + Express (arquitectura MVC con controladores y enrutamiento limpio) + JWT + BcryptJS (seguridad) + PDFKit (generador de reportes en el servidor).
 *   **Base de Datos:** MySQL (ejecutado localmente a través de XAMPP).
 *   **Servicio de Mapas:** Google Maps JavaScript API (carga dinámica y optimizada, controlando polígonos, polilíneas, marcadores y ventanas de información interactiva).
+
+### Sobre las tecnologías
+
+Este repositorio contiene el **prototipo demostrativo** del sistema. Las tecnologías usadas en el prototipo difieren parcialmente del sistema propuesto para producción:
+
+| Componente | Prototipo (este repo) | Sistema propuesto (producción futura) |
+|---|---|---|
+| Mapas | Google Maps API | Leaflet + OpenStreetMap |
+| Base de datos | MySQL (XAMPP local) | PostgreSQL + PostGIS |
+| Despliegue | Local únicamente | Railway (nube) |
+| Autenticación | JWT | JWT |
+| Frontend | React + Vite | React |
+| Backend | Node.js + Express | Node.js + Express |
+| Reportes | PDFKit | PDFKit |
+
+El prototipo permite demostrar el funcionamiento de todos los módulos sin requerir infraestructura de nube ni dispositivos GPS físicos instalados en vehículos.
 
 ---
 

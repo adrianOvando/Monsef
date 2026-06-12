@@ -17,6 +17,7 @@ import VisualizacionRutas from './pages/VisualizacionRutas.jsx';
 import PuntosCriticos from './pages/PuntosCriticos.jsx';
 import ControlRecorridos from './pages/ControlRecorridos.jsx';
 import Reportes from './pages/Reportes.jsx';
+import HorariosEstablecidos from './pages/HorariosEstablecidos.jsx';
 import Administracion from './pages/Administracion.jsx';
 
 // Loader mientras se restaura la sesión
@@ -76,6 +77,7 @@ export default function App() {
           <Route path="puntos-criticos" element={<PuntosCriticos />} />
           <Route path="recorridos" element={<ControlRecorridos />} />
           <Route path="reportes" element={<Reportes />} />
+          <Route path="horarios" element={<HorariosEstablecidos />} />
           <Route
             path="administracion"
             element={
